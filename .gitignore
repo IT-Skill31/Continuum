@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+
+# Notes de test locales (non versionnées)
+GUIDE-TEST.md
+.github/
+.claude/

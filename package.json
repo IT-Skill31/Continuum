@@ -1,0 +1,42 @@
+{
+  "name": "continuum",
+  "version": "0.1.0",
+  "description": "Continuum — a conversational agent with persistent client memory: PostgreSQL + pgvector retrieval, portable across Claude, OpenAI, Gemini, Mistral and local models.",
+  "keywords": [
+    "conversational-agent",
+    "client-memory",
+    "rag",
+    "pgvector",
+    "postgresql",
+    "claude",
+    "llm"
+  ],
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "migrate": "tsx scripts/migrate.ts",
+    "seed": "tsx scripts/seed.ts",
+    "chat": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
+    "@google/genai": "^2.24.0",
+    "@mistralai/mistralai": "^2.7.0",
+    "dotenv": "^16.4.5",
+    "openai": "^7.23.0",
+    "pg": "^8.13.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
