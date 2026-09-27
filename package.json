@@ -22,7 +22,12 @@
     "build": "tsc",
     "migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed.ts",
-    "chat": "tsx src/cli.ts"
+    "chat": "tsx src/cli.ts",
+    "serve": "tsx src/server.ts",
+    "token": "tsx scripts/token.ts",
+    "web:install": "npm --prefix web install",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",

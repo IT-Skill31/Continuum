@@ -79,6 +79,17 @@ export const config = {
   ftsConfig: process.env.FTS_CONFIG ?? "simple",
   recallLimit: int("RECALL_LIMIT", 8),
   historyTurns: int("HISTORY_TURNS", 12),
+
+  /** HTTP API + web client (src/server.ts). */
+  webHost: process.env.WEB_HOST ?? "127.0.0.1",
+  webPort: int("WEB_PORT", 8787),
+  /**
+   * When set, the browser must present a token signed with this secret to open
+   * a session. When empty, anyone who can reach the server can open a session
+   * as any client -- allowed only on a loopback address. See src/webAuth.ts.
+   */
+  webAuthSecret: process.env.WEB_AUTH_SECRET ?? "",
+  webSessionIdleMinutes: int("WEB_SESSION_IDLE_MINUTES", 30),
 } as const;
 
 export const embeddingsEnabled = config.voyageApiKey.length > 0;

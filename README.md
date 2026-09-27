@@ -102,6 +102,32 @@ Two consequences worth understanding before you pick one:
 
 **The non-Claude adapters are not streamed.** The whole reply arrives through `onText` at once. Accumulating tool-call argument deltas is the fiddly part of streaming and none of it could be exercised here; the interface already supports it, so adding it is a local change inside one adapter.
 
+## Web client
+
+A React interface for clients, in English, French and Spanish, served by a small HTTP API in front of the same `AgentSession` the CLI uses.
+
+```bash
+npm run web:install      # once: installs web/ dependencies
+npm run serve            # API on http://127.0.0.1:8787
+
+# development: hot-reloading UI on http://localhost:5173 (proxies /api to 8787)
+npm run web:dev
+
+# production: build once, then `npm run serve` serves the UI itself on 8787
+npm run web:build
+```
+
+**The interface language and the reply language are independent.** The EN/FR/ES switch (English by default, the choice remembered per device) translates the interface. The model menu next to it picks the LLM backend: only backends that can answer are selectable (credentials present; for Ollama, the local server running), and switching mid-chat resumes the same conversation and memories on the new model. When `AGENT_PROVIDER` cannot answer, the server falls back to the first backend that can. The assistant answers in whatever language the client writes in, as the system prompt already requires.
+
+**Who the client is must not come from the browser.** Two modes, chosen by `WEB_AUTH_SECRET`:
+
+| Mode | When | How the client is identified |
+|---|---|---|
+| open | `WEB_AUTH_SECRET` empty | The client types an email or id. Anyone can claim to be anyone, so the server refuses to listen on anything but a loopback address. Testing only. |
+| token | `WEB_AUTH_SECRET` set | Your site, where the client is already logged in, mints a short-lived signed token and links to `https://<chat>/?token=…`. The format is in [src/webAuth.ts](src/webAuth.ts); `npm run token -- client@example.com` mints one for testing. |
+
+Replies are streamed to the browser as server-sent events (live on Claude; in one piece on the other backends, as in the CLI). The browser only ever receives error *codes*, translated client-side; the real cause is logged on the server. Web sessions are kept in memory and expire after `WEB_SESSION_IDLE_MINUTES`; losing one costs nothing, since reopening resumes the same conversation from Postgres.
+
 ## Layout
 
 | Path | What it is |
@@ -118,6 +144,9 @@ Two consequences worth understanding before you pick one:
 | [src/agent/tools.ts](src/agent/tools.ts) | The six tools, built per session |
 | [src/agent/agent.ts](src/agent/agent.ts) | `AgentSession`: one turn = persist, retrieve, inject, run, persist |
 | [src/cli.ts](src/cli.ts) | Interactive REPL for talking to a client's session |
+| [src/server.ts](src/server.ts) | HTTP API (sessions, SSE replies) and static host for the web build |
+| [src/webAuth.ts](src/webAuth.ts) | Signed client tokens for the web API |
+| [web/](web/) | React client (Vite): i18n in `web/src/i18n`, UI in `web/src/components` |
 
 ## Tools available to the model
 
