@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { ar } from "./ar";
 import { en, type MessageKey } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";
@@ -17,14 +18,15 @@ import { fr } from "./fr";
  * writes in, whichever UI language is selected.
  */
 export const LOCALES = [
-  { code: "en", label: "English" },
-  { code: "fr", label: "Français" },
-  { code: "es", label: "Español" },
+  { code: "en", label: "English", dir: "ltr" },
+  { code: "fr", label: "Français", dir: "ltr" },
+  { code: "es", label: "Español", dir: "ltr" },
+  { code: "ar", label: "العربية", dir: "rtl" },
 ] as const;
 
 export type Locale = (typeof LOCALES)[number]["code"];
 
-const DICTIONARIES: Record<Locale, Record<MessageKey, string>> = { en, fr, es };
+const DICTIONARIES: Record<Locale, Record<MessageKey, string>> = { en, fr, es, ar };
 const STORAGE_KEY = "continuum.locale";
 
 function isLocale(value: string | null | undefined): value is Locale {
@@ -59,6 +61,8 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = locale;
+    document.documentElement.dir =
+      LOCALES.find((option) => option.code === locale)?.dir ?? "ltr";
   }, [locale]);
 
   const setLocale = useCallback((next: Locale) => {

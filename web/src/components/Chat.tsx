@@ -219,6 +219,7 @@ export function Chat({ session, send }: ChatProps) {
             ref={inputRef}
             className="composer__input"
             rows={1}
+            dir="auto"
             value={draft}
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.placeholder")}
@@ -276,11 +277,11 @@ function Bubble({ role, text, muted, streaming, failed }: BubbleProps) {
         <span className="sr-only">{role === "user" ? t("chat.you") : t("chat.assistant")}: </span>
         {role === "assistant" ? (
           // react-markdown renders no raw HTML, so model output cannot inject markup.
-          <div className="markdown">
+          <div className="markdown" dir="auto">
             <Markdown components={MARKDOWN_COMPONENTS}>{text}</Markdown>
           </div>
         ) : (
-          <p className="plain">{text}</p>
+          <p className="plain" dir="auto">{text}</p>
         )}
       </div>
     </div>
