@@ -104,7 +104,7 @@ Two consequences worth understanding before you pick one:
 
 ## Web client
 
-A React interface for clients, in English, French and Spanish, served by a small HTTP API in front of the same `AgentSession` the CLI uses.
+A React interface for clients, in English, French, Spanish and Arabic, served by a small HTTP API in front of the same `AgentSession` the CLI uses.
 
 ```bash
 npm run web:install      # once: installs web/ dependencies
@@ -117,7 +117,7 @@ npm run web:dev
 npm run web:build
 ```
 
-**The interface language and the reply language are independent.** The EN/FR/ES switch (English by default, the choice remembered per device) translates the interface. The model menu next to it picks the LLM backend: only backends that can answer are selectable (credentials present; for Ollama, the local server running), and switching mid-chat resumes the same conversation and memories on the new model. When `AGENT_PROVIDER` cannot answer, the server falls back to the first backend that can. The assistant answers in whatever language the client writes in, as the system prompt already requires.
+**The interface language and the reply language are independent.** The EN/FR/ES/AR switch (English by default, the choice remembered per device) translates the interface; Arabic also switches the layout to right-to-left, and messages and the input follow the direction of their own text. The model menu next to it picks the LLM backend: only backends that can answer are selectable (credentials present; for Ollama, the local server running), and switching mid-chat resumes the same conversation and memories on the new model. When `AGENT_PROVIDER` cannot answer, the server falls back to the first backend that can. The assistant answers in whatever language the client writes in, as the system prompt already requires.
 
 **Who the client is must not come from the browser.** Two modes, chosen by `WEB_AUTH_SECRET`:
 
